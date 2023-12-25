@@ -66,11 +66,7 @@ class LoginForm(ttk.Frame):
                                        style = "Custom.TButton",
                                        command = self.check_user_presence)
 
-        # REGISTER BTN WIDGET
-        self.__register_button = ttk.Button(master = parent,
-                                          text = "Register",
-                                          style = "Custom.TButton",
-                                          command = self.signup_user)
+      
         
         
         self.initial_frame = tk.StringVar(value = False)
@@ -89,19 +85,7 @@ class LoginForm(ttk.Frame):
                                           style="Custom.TRadiobutton",
                                           command = self.toggle_login_form,
                                           value = False)
-        
-        self.__user_role = tk.StringVar(value = "Student")
-        # RADIOBTN FOR CHOOSING ROLE ( AS AN INSTRUCTOR )
-        self.__user_role_as_instructor = ttk.Radiobutton(master = parent,
-                                           text = "Instructor",
-                                           style = "Custom.TRadiobutton",
-                                           value = "Instructor")
-        
-        # RADIOBTN FOR CHOOSING ROLE ( AS A STUDENT )
-        self.__user_role_as_student = ttk.Radiobutton(master = parent,
-                                           text = "Student",
-                                           style = "Custom.TRadiobutton",
-                                           value = "Student")
+              
         
         #########################################################################                 PLACING STATE MANAGING BUTTONS                       #
         ########################################################################
@@ -154,6 +138,27 @@ class LoginForm(ttk.Frame):
                                         font = "Helvetica",
                                         show = "*")
         
+          # REGISTER BTN WIDGET
+        self.__register_button = ttk.Button(master = parent,
+                                          text = "Register",
+                                          style = "Custom.TButton",
+                                          command = self.signup_user)
+        
+        self.__user_role = tk.StringVar(value = "Student")
+        # RADIOBTN FOR CHOOSING ROLE ( AS AN INSTRUCTOR )
+        self.__user_role_as_instructor = ttk.Radiobutton(master = parent,
+                                           text = "Instructor",
+                                           style = "Custom.TRadiobutton",
+                                           value = "Instructor",
+                                           variable = self.__user_role)
+        
+        # RADIOBTN FOR CHOOSING ROLE ( AS A STUDENT )
+        self.__user_role_as_student = ttk.Radiobutton(master = parent,
+                                           text = "Student",
+                                           style = "Custom.TRadiobutton",
+                                           value = "Student",
+                                           variable = self.__user_role)
+        
         
         # FRAME PLACING METHOD LOGINFORM
         self.place(relx = 0.5,
@@ -165,14 +170,16 @@ class LoginForm(ttk.Frame):
         self.__username_of_user = self.__username_entry.get()
         self.__password_of_user = self.__password_entry.get()
         
-        for user_index in reg_userdata:
-            for user in user_index:
-                if user_index["username"] == self.__username_of_user and user_index["userpassword"] == self.__password_of_user:
-                    print("signed In")
-                    return True
-                else:
-                    print("error occured")
-                    return False
+        with open("reg_userdata.json","w") as f:
+            data = json.load(f)
+            for user_index in data:
+                for user in user_index:
+                    if user_index["username"] == self.__username_of_user and user_index["userpassword"] == self.__password_of_user:
+                        print("Signed In")
+                        return True
+                    else:
+                        print("Error occured")
+                        return False
     
     # METHOD USED TO TOGGLE REGISTRATION FORM
     def toggle_login_form(self):
@@ -259,6 +266,18 @@ class LoginForm(ttk.Frame):
             self.__email_entry.place(relx = 0.4,
                                      rely = 0.6)
             
+            # PLACING USER ROLE BTN ( INSTRUCTOR )
+            self.__user_role_as_instructor.place(relx = 0.3,
+                                  rely = 0.7,
+                                  height = 50,
+                                  width = 130)
+            
+            # PLACING USER ROLE BTN ( STUDENT )
+            self.__user_role_as_student.place(rely = 0.8,
+                               relx = 0.5,
+                               height = 50,
+                               width = 130)
+            
             # PLACING SIGNUP BTN
             self.__register_button.place(relx = 0.527,
                                     rely = 0.7,
@@ -271,3 +290,6 @@ class LoginForm(ttk.Frame):
         email = self.__email_entry.get()
         role = self.__user_role.get()
         check_presence = self.check_user_presence()
+        
+        with open("reg_userdata.json","w") as f:
+            pass

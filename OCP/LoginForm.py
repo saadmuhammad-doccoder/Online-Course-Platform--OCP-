@@ -297,12 +297,12 @@ class LoginForm(ttk.Frame):
                     if data[role] == self.__user_role:
                         user_data = {
                             "id" : role,
-                            "username" :  name,
-                            "password" :  password,
-                            "email"  :email
+                            "username" : name,
+                            "password" : password,
+                            "email"  : email
                         }
                         data[role].dump(user_data)
-                        print("data saved")
+                        print("Data saved")
                     else:
                         print("Error occured")
                     

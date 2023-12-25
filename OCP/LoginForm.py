@@ -290,6 +290,19 @@ class LoginForm(ttk.Frame):
         email = self.__email_entry.get()
         role = self.__user_role.get()
         check_presence = self.check_user_presence()
-        
-        with open("reg_userdata.json","w") as f:
-            pass
+        if not check_presence:
+            with open("reg_userdata.json","w") as f:
+                data = json.load(f)
+                for role in data:
+                    if data[role] == self.__user_role:
+                        user_data = {
+                            "id" : role,
+                            "username" :  name,
+                            "password" :  password,
+                            "email"  :email
+                        }
+                        data[role].dump(user_data)
+                        print("data saved")
+                    else:
+                        print("Error occured")
+                    
